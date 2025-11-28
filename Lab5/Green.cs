@@ -153,7 +153,7 @@ namespace Lab5
         public void Task6(int[,] matrix)
         {
 
-            int maxIndex = 0, minIndex = 0, max = Int32.MinValue, min = Int32.MaxValue;
+            int maxIndex = 0, minIndex = 0, max = int.MinValue, min = int.MaxValue;
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 int cnt = 0;
@@ -184,54 +184,189 @@ namespace Lab5
         }
         public int[,] Task7(int[,] matrix, int[] array)
         {
-            int[,] answer = null;
+            
 
-            // code here
+            if (matrix.GetLength(0) != array.Length)
+            {
+                return matrix;
+            }
+            int[,] answer = new int[matrix.GetLength(0), matrix.GetLength(1) + 1];
+            int minn = int.MaxValue;
+            int mincolumn = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i, j] < minn)
+                    {
+                        minn = matrix[i, j];
+                        mincolumn = j;
+                    }
+                }
+            }
+            
 
-            // end
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j <= matrix.GetLength(1); j++)
+                {
+                    if (j <= mincolumn)
+                        answer[i, j] = matrix[i, j];
+                    else if (j == mincolumn + 1)
+                        answer[i, j] = array[i];
+                    else
+                        answer[i, j] = matrix[i, j - 1];
+                }
+            }
 
             return answer;
         }
         public void Task8(int[,] matrix)
         {
 
-            // code here
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                int maxx = int.MinValue;
+                int maxindex = -1;
+                int countpositive = 0;
+                int countnegative = 0;
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
 
-            // end
+                    if (matrix[i, j] < 0) countnegative += 1;
+                    if (matrix[i, j] > 0) countpositive += 1;
+
+                    if ((matrix[i, j] > maxx))
+                    {
+                        maxx= matrix[i, j];
+                        maxindex = i;
+                    }
+
+                }
+                if (maxindex != -1)
+                {
+                    if (countpositive > countnegative)
+                    {
+                        matrix[maxindex, j] = 0;
+                    }
+                    else if (countnegative > countpositive)
+                    {
+                        matrix[maxindex, j] = maxindex;
+                    }
+
+                }
+            }
 
         }
         public void Task9(int[,] matrix)
         {
 
-            // code here
+            if (matrix.GetLength(0) != matrix.GetLength(1))
+                return;
 
-            // end
+            for (int a = 0; a < matrix.GetLength(0) * matrix.GetLength(1); a++)
+            {
+                int i = a / matrix.GetLength(0);
+                int j = a % matrix.GetLength(0);
+                if (i == 0 || i == matrix.GetLength(0) - 1 || j == 0 || j == matrix.GetLength(0) - 1)
+                {
+                    matrix[i, j] = 0;
+                }
+            }
 
         }
         public (int[] A, int[] B) Task10(int[,] matrix)
         {
             int[] A = null, B = null;
 
-            // code here
+            if (matrix.GetLength(0) != matrix.GetLength(1))
+            {
+                return (A, B);
 
-            // end
+            }
+            int n = matrix.GetLength(0);
+
+            int sizeA = n * (n + 1) / 2;
+            int sizeB = n * (n - 1) / 2;
+
+            A = new int[sizeA];
+            B = new int[sizeB];
+
+            int indexA = 0;
+            int indexB = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (j >= i)
+                    {
+                        A[indexA] = matrix[i, j];
+                        indexA++;
+                    }
+                    else
+                    {
+                        B[indexB] = matrix[i, j];
+                        indexB++;
+                    }
+                }
+            }
 
             return (A, B);
         }
         public void Task11(int[,] matrix)
         {
 
-            // code here
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    for (int a = 0; a < matrix.GetLength(0) - i - 1; a++)
+                    {
 
-            // end
+                        if (j % 2 == 0 && matrix[a, j] < matrix[a + 1, j])
+                        {
+                            int temp = matrix[a, j];
+                            matrix[a, j] = matrix[a + 1, j];
+                            matrix[a + 1, j] = temp;
+                        }
+
+                        if (j % 2 != 0 && matrix[a, j] > matrix[a + 1, j])
+                        {
+                            int temp = matrix[a, j];
+                            matrix[a, j] = matrix[a + 1, j];
+                            matrix[a + 1, j] = temp;
+                        }
+                    }
+                }
+            }
 
         }
         public void Task12(int[][] array)
         {
 
-            // code here
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    int sumi = 0;
+                    for (int k = 0; k < array[i].Length; k++)
+                        sumi += array[i][k];
 
-            // end
+                    int sumj = 0;
+                    for (int a = 0; a < array[j].Length; a++)
+                    {
+                        sumj += array[j][a];
+                    }
+
+                    if (array[j].Length > array[i].Length || (array[j].Length == array[i].Length && sumj > sumi))
+                    {
+                        int[] temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
 
         }
     }
